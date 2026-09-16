@@ -1,0 +1,6 @@
+{
+  "name": "Transportation Problem Solver",
+  "description": "Operations Research Transportation Problem solver supporting North-West Corner Rule, Least-Cost Method, Maximum Cell Profit, Vogel's Approximation Method (VAM), and Stepping Stone optimality method with closed-loop visualization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
