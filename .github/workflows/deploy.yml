@@ -15,6 +15,8 @@ jobs:
           node-version: 20
 
       - run: npm install
+      - name: Fix Vite executable permissions
+        run: chmod +x node_modules/.bin/vite
       - run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
