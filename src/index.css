@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  header, nav, button, .no-print, [role="tablist"] {
+    display: none !important;
+  }
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  main {
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+  svg {
+    display: block !important;
+    visibility: visible !important;
+  }
+  table {
+    page-break-inside: avoid !important;
+    width: 100% !important;
+  }
+  tr, td, th {
+    page-break-inside: avoid !important;
+  }
+}
