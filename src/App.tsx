@@ -188,58 +188,51 @@ export default function App() {
     <div className="glossy-app min-h-screen bg-transparent text-slate-900 flex flex-col font-sans">
       {/* Navigation Header */}
       <header className="glass-header border-b border-slate-200/80 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-4">
-            {/* Logo & Title */}
-            <div className="flex items-center gap-3">
-              <div className="brand-mark w-10 h-10 rounded-xl text-white flex items-center justify-center shadow-lg">
-                <Truck className="w-5 h-5" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+              <div className="brand-mark w-8 h-8 sm:w-10 sm:h-10 rounded-xl text-white flex items-center justify-center shadow-lg shrink-0">
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight brand-title">
-                    Transportation Problem Solver
-                  </h1>
-                  <span className="hidden sm:inline-block px-2 py-0.5 rounded text-2xs font-semibold badge-pill border">
-                    Operations Research
-                  </span>
-                </div>
-                <p className="text-2xs sm:text-xs text-slate-500 brand-subtitle">
-                  NWCR • Least-Cost • Max Profit • Vogel&apos;s (VAM) • Stepping Stone
+              <div className="min-w-0">
+                <h1 className="truncate text-sm sm:text-base lg:text-lg font-extrabold text-slate-900 tracking-tight">
+                  Transportation Problem Solver
+                </h1>
+                <p className="hidden sm:block text-[10px] text-slate-500">
+                  NWCR • Least-Cost • Max Profit • Vogel&apos;s • Stepping Stone
                 </p>
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 id="btn-nav-diagnostics"
                 onClick={() => setActiveTab('diagnostics')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors border ${
+                className={`flex items-center justify-center rounded-lg border px-2 py-1.5 text-[10px] font-semibold transition-colors sm:px-3 sm:text-xs ${
                   activeTab === 'diagnostics'
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
                 }`}
                 title="View Invariant Verification & MODI Dual Debugger"
               >
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span className="hidden sm:inline">Diagnostics & Debug</span>
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline sm:ml-1.5">Diagnostics</span>
               </button>
               <button
                 onClick={() => setIsTheoryOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors"
+                className="hidden sm:flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100"
                 title="Operations Research Method Guide"
               >
                 <HelpCircle className="w-4 h-4 text-indigo-600" />
-                <span className="hidden md:inline">Theory & Rules</span>
+                Theory
               </button>
               <button
                 onClick={() => setIsPrintOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+                className="hidden sm:flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100"
                 title="Print or Export PDF"
               >
                 <Printer className="w-4 h-4 text-slate-500" />
-                <span className="hidden md:inline">Print Report</span>
+                Print
               </button>
             </div>
           </div>
@@ -277,38 +270,38 @@ export default function App() {
           </aside>
           <section className="min-w-0">
         {(!isSolverOpen || activeTab === 'overview') && (
-          <div className="space-y-6">
-            <div className="hero-panel overflow-hidden rounded-2xl p-6 text-white shadow-xl sm:p-8">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="hero-panel overflow-hidden rounded-2xl p-4 text-white shadow-xl sm:p-6 lg:p-8">
               <div className="hero-orb" />
               <div className="hero-orb second" />
-              <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end relative z-10">
+              <div className="relative z-10 flex flex-col gap-5">
                 <div className="max-w-2xl">
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-100"><BrainCircuit className="h-3.5 w-3.5" /> Easy transportation planning</div>
-                  <h2 className="text-3xl font-black tracking-tight sm:text-4xl">Plan smarter routes in a few steps.</h2>
-                  <p className="mt-3 max-w-xl text-sm leading-6 text-slate-200">Build a transportation problem, compare method results, and check feasibility without getting lost in technical details.</p>
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-indigo-100 sm:text-[10px]"><BrainCircuit className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Easy planning</div>
+                  <h2 className="text-2xl font-black tracking-tight sm:text-3xl lg:text-4xl">Plan smarter routes in a few steps.</h2>
+                  <p className="mt-2 max-w-xl text-xs leading-5 text-slate-200 sm:text-sm sm:leading-6">Build a transportation problem, compare methods, and check feasibility without getting lost in details.</p>
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row">
-                  <button onClick={() => openSolver('editor')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-slate-900/25 px-4 py-3 text-xs font-bold text-white transition hover:border-indigo-200 hover:bg-slate-900/35"><Edit3 className="h-4 w-4" /> Start editing</button>
-                  <button onClick={() => openSolver('stepping_stone')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl primary-action px-4 py-3 text-xs font-bold text-white shadow-lg transition hover:brightness-110"><Route className="h-4 w-4" /> Find the best plan <ArrowUpRight className="h-4 w-4" /></button>
+                  <button onClick={() => openSolver('editor')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-slate-900/25 px-3 py-2.5 text-[11px] font-bold text-white transition hover:border-indigo-200 hover:bg-slate-900/35 sm:px-4 sm:py-3 sm:text-xs"><Edit3 className="h-4 w-4" /> Start editing</button>
+                  <button onClick={() => openSolver('stepping_stone')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl primary-action px-3 py-2.5 text-[11px] font-bold text-white shadow-lg transition hover:brightness-110 sm:px-4 sm:py-3 sm:text-xs"><Route className="h-4 w-4" /> Find the best plan <ArrowUpRight className="h-4 w-4" /></button>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {quickStartActions.map(({ id, label, description, icon: Icon }) => (
                 <button
                   key={id}
                   onClick={() => openSolver(id)}
-                  className="glass-panel rounded-2xl p-4 text-left transition hover:-translate-y-0.5 hover:shadow-lg"
+                  className="glass-panel rounded-2xl p-3 text-left transition hover:-translate-y-0.5 hover:shadow-lg sm:p-4"
                 >
                   <div className="mb-3 flex items-center justify-between">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 sm:h-10 sm:w-10">
                       <Icon className="h-4 w-4" />
                     </span>
                     <ChevronRight className="h-4 w-4 text-slate-400" />
                   </div>
                   <p className="text-sm font-extrabold text-slate-900">{label}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
+                  <p className="mt-1 text-[11px] leading-5 text-slate-500 sm:text-xs">{description}</p>
                 </button>
               ))}
             </div>
