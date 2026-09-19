@@ -242,20 +242,25 @@ export default function App() {
             <button
               type="button"
               onClick={() => (setIsSolverOpen(false), setActiveTab('overview'))}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === 'overview' ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === 'overview' ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
             >
+              <LayoutDashboard className="h-3.5 w-3.5" />
               Overview
             </button>
           </div>
-          {navigationItems.filter((item) => ['editor', 'stepping_stone', 'comparison'].includes(item.id)).map((item) => (
-            <button
-              key={item.id}
-              onClick={() => openSolver(item.id)}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === item.id ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
-            >
-              {item.label}
-            </button>
-          ))}
+          {navigationItems.filter((item) => ['editor', 'stepping_stone', 'comparison'].includes(item.id)).map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => openSolver(item.id)}
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === item.id ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {item.label}
+              </button>
+            );
+          })}
         </div>
         <div className="dashboard-tools-row mb-3 flex items-center justify-between gap-2 lg:hidden">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Quick tools</p>
