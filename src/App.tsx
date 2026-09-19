@@ -69,6 +69,7 @@ export default function App() {
   const [problem, setProblem] = useState<TransportationProblem>(SAMPLE_PROBLEMS[0]);
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [isSolverOpen, setIsSolverOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [steppingStoneInitialMethod, setSteppingStoneInitialMethod] = useState<
     'nwcr' | 'least_cost' | 'max_profit' | 'vam'
   >('nwcr');
@@ -187,7 +188,7 @@ export default function App() {
   return (
     <div className="glossy-app min-h-screen bg-transparent text-slate-900 flex flex-col font-sans">
       {/* Navigation Header */}
-      <header className="glass-header border-b border-slate-200/80 sticky top-0 z-30 shadow-sm">
+      <header className="glass-header dashboard-header border-b border-slate-200/80 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
             <div className="flex min-w-0 items-center gap-2 sm:gap-3">
@@ -205,19 +206,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <button
-                id="btn-nav-diagnostics"
-                onClick={() => setActiveTab('diagnostics')}
-                className={`flex items-center justify-center rounded-lg border px-2 py-1.5 text-[10px] font-semibold transition-colors sm:px-3 sm:text-xs ${
-                  activeTab === 'diagnostics'
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
-                }`}
-                title="View Invariant Verification & MODI Dual Debugger"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline sm:ml-1.5">Diagnostics</span>
-              </button>
               <button
                 onClick={() => setIsTheoryOpen(true)}
                 className="hidden sm:flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-100"
@@ -240,31 +228,86 @@ export default function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1">
-        <div className="mb-4 flex items-center gap-2 overflow-x-auto lg:hidden no-scrollbar">
-          <Menu className="h-4 w-4 shrink-0 text-slate-400" />
-          {navigationItems.slice(0, 3).map((item) => (
+      <main className="dashboard-shell max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1">
+        <div className="dashboard-tab-row mb-3 flex items-center gap-2 overflow-x-auto pb-1 lg:hidden no-scrollbar">
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsSidebarOpen((open) => !open)}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/70 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-100"
+              aria-label="Toggle navigation menu"
+            >
+              <Menu className="h-4 w-4 text-slate-500" />
+            </button>
+            <button
+              type="button"
+              onClick={() => (setIsSolverOpen(false), setActiveTab('overview'))}
+              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === 'overview' ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
+            >
+              Overview
+            </button>
+          </div>
+          {navigationItems.filter((item) => ['editor', 'stepping_stone', 'comparison'].includes(item.id)).map((item) => (
             <button
               key={item.id}
-                onClick={() => item.id === 'overview' ? (setIsSolverOpen(false), setActiveTab('overview')) : openSolver(item.id)}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-bold ${activeTab === item.id ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-600'}`}
+              onClick={() => openSolver(item.id)}
+              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-bold ${activeTab === item.id ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm' : 'border-slate-200 bg-white/70 text-slate-600'}`}
             >
               {item.label}
             </button>
           ))}
         </div>
+        <div className="dashboard-tools-row mb-3 flex items-center justify-between gap-2 lg:hidden">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Quick tools</p>
+          <button
+            onClick={() => setActiveTab('diagnostics')}
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-bold transition-colors ${activeTab === 'diagnostics' ? 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200' : 'bg-slate-50 text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100'}`}
+          >
+            <ShieldCheck className="h-3.5 w-3.5" />
+            Diagnostics
+          </button>
+        </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <aside className="hidden lg:block">
-            <div className="glass-panel sticky top-24 rounded-2xl p-3">
-              <div className="mb-5 flex items-center gap-3 border-b border-slate-100 px-2 pb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200"><Truck className="h-5 w-5" /></div>
-                <div><p className="text-xs font-extrabold tracking-tight text-slate-900">OR WORKSPACE</p><p className="text-[10px] text-slate-400">Decision intelligence</p></div>
+          <aside
+            className={
+              isSidebarOpen
+                ? 'fixed inset-y-0 left-0 z-40 w-[280px] translate-x-0 p-4 lg:static lg:z-auto lg:w-auto lg:p-0 lg:translate-x-0'
+                : 'hidden lg:block lg:translate-x-0'
+            }
+          >
+            <div className="glass-panel h-full overflow-y-auto rounded-2xl p-3 lg:sticky lg:top-24 lg:h-auto">
+              <div className="mb-5 flex items-center justify-between gap-3 border-b border-slate-100 px-2 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200"><Truck className="h-5 w-5" /></div>
+                  <div><p className="text-xs font-extrabold tracking-tight text-slate-900">OR WORKSPACE</p><p className="text-[10px] text-slate-400">Decision intelligence</p></div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="lg:hidden rounded-lg border border-slate-200 bg-white/80 px-2 py-1 text-[10px] font-bold text-slate-600"
+                >
+                  Close
+                </button>
               </div>
               {['Workspace', 'Initial Solvers', 'Learning Modules', 'Tools'].map(renderNavigationGroup)}
-              <div className="rounded-xl bg-slate-50 p-3">
+              <div className="space-y-2 rounded-xl bg-slate-50 p-3">
                 <div className="mb-2 flex items-center justify-between"><span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Active model</span><span className="h-2 w-2 rounded-full bg-emerald-500" /></div>
                 <p className="truncate text-xs font-bold text-slate-700">{problem.name}</p>
                 <p className="mt-1 text-[10px] text-slate-400">{problem.sources.length} origins · {problem.destinations.length} markets</p>
+                <button
+                  onClick={() => {
+                    setActiveTab('diagnostics');
+                    setIsSidebarOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-center gap-2 rounded-lg border px-3 py-2 text-[10px] font-semibold transition-colors ${
+                    activeTab === 'diagnostics'
+                      ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                      : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  Diagnostics
+                </button>
               </div>
             </div>
           </aside>
@@ -307,19 +350,19 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-              <div className="glass-panel rounded-2xl p-5">
+              <div className="glass-panel rounded-2xl p-4 sm:p-5">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-600">Quick start</p>
-                    <h3 className="mt-1 text-base font-bold text-slate-900">Follow these simple steps</h3>
+                    <h3 className="mt-1 text-base font-bold text-slate-900">Follow these steps</h3>
                   </div>
                   <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700">Friendly</span>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {[
-                    ['1', 'Create or edit', 'Change supplies, demand, and route costs in one place.'],
-                    ['2', 'Pick a method', 'Compare basic and advanced planning methods.'],
-                    ['3', 'Review the results', 'Check the answer and confirm it is balanced.'],
+                    ['1', 'Edit', 'Update supplies and demand.'],
+                    ['2', 'Compare', 'Test different methods.'],
+                    ['3', 'Review', 'Check the final answer.'],
                   ].map(([step, title, detail]) => (
                     <div key={step} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
                       <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-black text-white">{step}</div>
@@ -330,22 +373,21 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="glass-panel rounded-2xl p-5 bg-gradient-to-br from-slate-50 to-indigo-50">
+              <div className="hidden sm:block glass-panel rounded-2xl p-5 bg-gradient-to-br from-slate-50 to-indigo-50">
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-700">Why it feels easier</p>
                 <h3 className="mt-1 text-base font-bold text-slate-900">Designed to be clear</h3>
                 <ul className="mt-3 space-y-2 text-xs text-slate-600">
-                  <li>• Consistent actions and labels throughout the app</li>
-                  <li>• Clear steps for editing, comparing, and checking</li>
-                  <li>• Simple cards and status feedback for quick decisions</li>
-                  <li>• A calmer layout that is easier to scan on mobile</li>
+                  <li>• Clear tasks and labels</li>
+                  <li>• Simple decision flow</li>
+                  <li>• Easy status feedback</li>
                 </ul>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {[['Active model', problem.name, 'Balanced transportation plan'], ['Decision surface', `${problem.sources.length} × ${problem.destinations.length}`, 'Origins × destination markets'], ['Optimal benchmark', `$${solutions.stepping_stone.totalCost.toLocaleString()}`, 'Stepping Stone result']].map(([label, value, detail]) => <div key={label} className="glass-panel rounded-2xl p-5"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">{label}</p><p className="mt-2 truncate text-lg font-black text-slate-900">{value}</p><p className="mt-1 text-xs text-slate-500">{detail}</p></div>)}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {[['Active model', problem.name, 'Balanced transportation plan'], ['Decision surface', `${problem.sources.length} × ${problem.destinations.length}`, 'Origins × destination markets'], ['Optimal benchmark', `$${solutions.stepping_stone.totalCost.toLocaleString()}`, 'Stepping Stone result']].map(([label, value, detail]) => <div key={label} className="glass-panel rounded-2xl p-4 sm:p-5"><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">{label}</p><p className="mt-2 truncate text-lg font-black text-slate-900">{value}</p><p className="mt-1 text-xs text-slate-500">{detail}</p></div>)}
             </div>
-            <div className="space-y-7">
+            <div className="hidden lg:block space-y-7">
               {overviewGroups.map((group) => (
                 <div key={group.label}>
                   <div className="mb-3 flex items-end justify-between gap-4"><div><p className={`text-[10px] font-bold uppercase tracking-[0.18em] ${group.accent}`}>{group.label}</p><p className="mt-1 max-w-2xl text-xs text-slate-400">{group.description}</p></div><span className="shrink-0 text-xs text-slate-400">{group.ids.length} tools</span></div>
@@ -456,18 +498,6 @@ export default function App() {
             </span>
           </button>
 
-          <button
-            id="tab-diagnostics"
-            onClick={() => setActiveTab('diagnostics')}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
-              activeTab === 'diagnostics'
-                ? 'border-emerald-600 text-emerald-700 bg-emerald-50/40 font-bold'
-                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            Diagnostics & Invariants
-          </button>
         </div>}
 
         {/* Tab Content Panes */}
