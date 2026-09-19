@@ -192,8 +192,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2">
             <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-              <div className="brand-mark w-8 h-8 sm:w-10 sm:h-10 rounded-xl text-white flex items-center justify-center shadow-lg shrink-0">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="brand-mark w-10 h-10 sm:w-12 sm:h-12 rounded-xl text-white flex items-center justify-center shadow-lg shrink-0 border border-white/30">
+                <Truck className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0">
                 <h1 className="truncate text-sm sm:text-base lg:text-lg font-extrabold text-slate-900 tracking-tight">
