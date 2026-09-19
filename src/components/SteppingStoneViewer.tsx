@@ -527,7 +527,7 @@ Transport the specified quantities along the designated optimal routes to achiev
           {/* Active Loop Info Banner with matching Polygon Theme */}
           {activeLoop && (
             <div
-              className={`px-4 py-2.5 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs transition-all ${activePalette.rowHighlightBg} ${activePalette.borderAccent}`}
+              className={`loop-info-banner px-4 py-2.5 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs transition-all ${activePalette.rowHighlightBg} ${activePalette.borderAccent}`}
             >
               <div className="flex items-center gap-2">
                 <span

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   TransportationProblem,
   ProblemObjective,
@@ -19,13 +19,20 @@ import {
 interface ProblemEditorProps {
   problem: TransportationProblem;
   onUpdateProblem: (problem: TransportationProblem) => void;
+  autoFocus?: boolean;
 }
 
 export default function ProblemEditor({
   problem,
   onUpdateProblem,
+  autoFocus = false,
 }: ProblemEditorProps) {
+  const presetSelectRef = useRef<HTMLSelectElement>(null);
   const [selectedPresetId, setSelectedPresetId] = useState<string>(problem.id);
+
+  useEffect(() => {
+    if (autoFocus) presetSelectRef.current?.focus();
+  }, [autoFocus]);
 
   const totalSupply = problem.supply.reduce((acc, curr) => acc + (Number(curr) || 0), 0);
   const totalDemand = problem.demand.reduce((acc, curr) => acc + (Number(curr) || 0), 0);
@@ -213,6 +220,7 @@ export default function ProblemEditor({
             </label>
             <select
               id="preset-select"
+              ref={presetSelectRef}
               value={selectedPresetId}
               onChange={(e) => handlePresetSelect(e.target.value)}
               className="text-sm bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 font-medium"
@@ -276,7 +284,7 @@ export default function ProblemEditor({
       </div>
 
       {/* Balance Status Banner */}
-      <div className="px-4 py-2.5 bg-slate-100/70 border-b border-slate-200 flex flex-wrap items-center justify-between text-xs gap-3">
+      <div className="balance-banner px-4 py-2.5 bg-slate-100/70 border-b border-slate-200 flex flex-wrap items-center justify-between text-xs gap-3">
         <div className="flex items-center gap-2">
           <Scale className="w-4 h-4 text-slate-500" />
           <span className="text-slate-600">Problem Balance:</span>
