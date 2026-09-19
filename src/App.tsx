@@ -4,6 +4,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import {
   TransportationProblem,
   MethodSolution,
@@ -636,6 +637,9 @@ export default function App() {
         activeTab={activeTab}
         objective={problem.objective}
       />
+
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }
