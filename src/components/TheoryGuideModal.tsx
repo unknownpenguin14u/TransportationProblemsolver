@@ -80,10 +80,16 @@ export default function TheoryGuideModal({ isOpen, onClose }: TheoryGuideModalPr
                   Penalty method. For each row & column, calculates penalty = difference between lowest 2 costs. Prioritizes the row/column with the largest penalty, allocating to its lowest cost cell. Usually yields near-optimal initial solutions.
                 </p>
               </div>
+              <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 md:col-span-2">
+                <h5 className="font-bold text-slate-900 mb-1">Assignment Problem (Hungarian Method)</h5>
+                <p className="text-slate-600">
+                  A special allocation model where each source must be assigned to exactly one destination, and each destination can receive at most one assignment. The Hungarian method reduces the matrix, creates zero opportunities, and selects the minimum-total-cost one-to-one matching.
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* 3. Stepping Stone Method: 6-Step Standard Procedure */}
+          {/* 3. Assignment Problem & Stepping Stone Method */}
           <div>
             <h4 className="font-bold text-slate-900 text-base mb-1.5 flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 inline-flex items-center justify-center text-xs font-bold">

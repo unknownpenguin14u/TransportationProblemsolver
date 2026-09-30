@@ -25,6 +25,7 @@ import TheoryGuideModal from './components/TheoryGuideModal';
 import DiagnosticsDebugger from './components/DiagnosticsDebugger';
 import PrintModal from './components/PrintModal';
 import LinearProgrammingModule from './components/LinearProgrammingModule';
+import AssignmentProblemModule from './components/AssignmentProblemModule';
 import {
   Truck,
   Calculator,
@@ -45,6 +46,7 @@ import {
   ArrowUpRight,
   Menu,
   BookOpen,
+  Target,
 } from 'lucide-react';
 
 type TabType =
@@ -55,6 +57,7 @@ type TabType =
   | 'least_cost'
   | 'max_profit'
   | 'vam'
+  | 'assignment'
   | 'diagnostics'
   | 'linear_programming'
   | 'editor';
@@ -136,7 +139,7 @@ export default function App() {
       label: 'Optimization Analysis',
       description: 'Compare strategies and inspect the mathematical evidence behind each decision.',
       accent: 'text-violet-300',
-      ids: ['comparison', 'max_profit', 'diagnostics', 'linear_programming'] as TabType[],
+      ids: ['comparison', 'max_profit', 'diagnostics', 'linear_programming', 'assignment'] as TabType[],
     },
   ];
 
@@ -149,6 +152,7 @@ export default function App() {
     { id: 'least_cost', label: 'Least-Cost Method', description: 'Cost minimization', icon: ClipboardCheck, group: 'Initial Solvers' },
     { id: 'max_profit', label: 'Max Cell Profit', description: 'Profit maximization', icon: ArrowUpRight, group: 'Initial Solvers' },
     { id: 'nwcr', label: 'North-West Corner', description: 'Feasible starting plan', icon: Route, group: 'Initial Solvers' },
+    { id: 'assignment', label: 'Assignment Problem', description: 'Hungarian method', icon: Target, group: 'Learning Modules' },
     { id: 'diagnostics', label: 'Diagnostics', description: 'Verify your solution', icon: ShieldCheck, group: 'Tools' },
     { id: 'linear_programming', label: 'Linear Programming', description: 'Module 1 foundations', icon: BookOpen, group: 'Learning Modules' },
   ];
@@ -200,7 +204,7 @@ export default function App() {
                   Transportation Problem Solver
                 </h1>
                 <p className="hidden sm:block text-[10px] text-slate-500">
-                  NWCR • Least-Cost • Max Profit • Vogel&apos;s • Stepping Stone
+                  NWCR • Least-Cost • Max Profit • Vogel&apos;s • Assignment • Stepping Stone
                 </p>
               </div>
             </div>
@@ -404,6 +408,12 @@ export default function App() {
         )}
         {/* Problem Matrix Editor & Preset Controller */}
         {isSolverOpen && activeTab === 'linear_programming' && <LinearProgrammingModule onBack={() => { setIsSolverOpen(false); setActiveTab('overview'); }} />}
+        {isSolverOpen && activeTab === 'assignment' && (
+          <AssignmentProblemModule
+            problem={problem}
+            onBack={() => { setIsSolverOpen(false); setActiveTab('overview'); }}
+          />
+        )}
         {isSolverOpen && activeTab === 'editor' && (
           <div className="solver-drawer" aria-label="Problem editor workspace">
             <div className="mb-3 flex items-center justify-between rounded-xl border border-cyan-400/30 bg-slate-950/70 px-4 py-3">
@@ -416,10 +426,10 @@ export default function App() {
             <ProblemEditor problem={problem} onUpdateProblem={setProblem} autoFocus />
           </div>
         )}
-        {isSolverOpen && activeTab !== 'overview' && activeTab !== 'linear_programming' && activeTab !== 'editor' && <div className="solver-drawer" aria-label="Active solver workspace"><div className="mb-3 flex items-center justify-between rounded-xl border border-cyan-400/30 bg-slate-950/70 px-4 py-3"><div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300">Active solver workspace</p><p className="mt-1 text-sm font-bold text-white">{navigationItems.find((item) => item.id === activeTab)?.label}</p></div><button onClick={() => { setIsSolverOpen(false); setActiveTab('overview'); }} className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-cyan-300 hover:text-white">Back to overview</button></div><ProblemEditor problem={problem} onUpdateProblem={setProblem} autoFocus /></div>}
+        {isSolverOpen && activeTab !== 'overview' && activeTab !== 'linear_programming' && activeTab !== 'editor' && activeTab !== 'assignment' && <div className="solver-drawer" aria-label="Active solver workspace"><div className="mb-3 flex items-center justify-between rounded-xl border border-cyan-400/30 bg-slate-950/70 px-4 py-3"><div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300">Active solver workspace</p><p className="mt-1 text-sm font-bold text-white">{navigationItems.find((item) => item.id === activeTab)?.label}</p></div><button onClick={() => { setIsSolverOpen(false); setActiveTab('overview'); }} className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-cyan-300 hover:text-white">Back to overview</button></div><ProblemEditor problem={problem} onUpdateProblem={setProblem} autoFocus /></div>}
 
         {/* Navigation Tabs Bar */}
-        {isSolverOpen && activeTab !== 'overview' && activeTab !== 'linear_programming' && activeTab !== 'editor' && <div className="flex items-center border-b border-slate-200 mb-6 overflow-x-auto no-scrollbar gap-1">
+        {isSolverOpen && activeTab !== 'overview' && activeTab !== 'linear_programming' && activeTab !== 'editor' && activeTab !== 'assignment' && <div className="flex items-center border-b border-slate-200 mb-6 overflow-x-auto no-scrollbar gap-1">
           <button
             onClick={() => setActiveTab('stepping_stone')}
             className={`flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-colors ${
@@ -486,6 +496,20 @@ export default function App() {
             Max Cell Profit
             <span className="text-2xs text-slate-500">
               (${solutions.max_profit.totalCost.toLocaleString()})
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('assignment')}
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 text-xs sm:text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
+              activeTab === 'assignment'
+                ? 'border-indigo-600 text-indigo-700 bg-indigo-50/40 font-bold'
+                : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+            }`}
+          >
+            Assignment Problem
+            <span className="text-2xs text-slate-500">
+              (Hungarian)
             </span>
           </button>
 
@@ -622,7 +646,7 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
         <p>
-          Transportation Problem Operations Research Solver — Implementing NWCR, Least-Cost, Maximum Cell Profit, VAM, and Stepping Stone Optimality.
+          Transportation Problem Operations Research Solver — Implementing NWCR, Least-Cost, Maximum Cell Profit, VAM, Assignment, and Stepping Stone Optimality.
         </p>
       </footer>
 
